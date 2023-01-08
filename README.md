@@ -169,7 +169,7 @@ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### **2. Analyse fréquentielle du chant du rorqual bleu**
 $~~~~~~~~~~~~~~~~~~~~~~$<a name="part2a"></a>
-#### **- Synthèse d’une gamme de musique**
+### $~~~~~~~~~~~~~~~~~~~~~~$ **- Synthèse d’une gamme de musique**
 
 ##### Les notes de musique produites par un piano peuvent être synthétisées approximativement numériquement. En effet, chaque note peut être considérée comme étant un son pur produit par un signal sinusoïdal. La fréquence de la note « La » est par exemple de 440 Hz.
 ***
@@ -216,52 +216,47 @@ sound(gamme_de_musique,m_Fs);
 $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ [ (Revenir au sommaire) ](#retour)
 ***
 $~~~~~~~~~~~~~~~~~~~~~~$<a name="part2b"></a>
-#### **- Spectre de la gamme de musique**
+### $~~~~~~~~~~~~~~~~~~~~~~$ **- Spectre de la gamme de musique**
 #### $~~~~~~$ **2- Utilisez l’outil graphique d’analyse de signaux signalAnalyzer pour visualiser le spectre de votre gamme. Observez les 8 fréquences contenues dans la gamme et vérifiez leur valeur numérique à l’aide des curseurs.** 
 ***
- ### **Explication :**
- ###### sound(xnoise , fe) envoie le signal audio y au haut-parleur à sa fréquence d’échantillonnage fe .
- ###### on a compressé le signal en multipliant le temps par 10 en utilisant Matlab, mais cette technique ne fera que réduire la durée du signal, mais ne supprimera pas les données inutiles ou redondantes.
+ ###### Le Signal Analyzer est un outil de visualisation de signal dans MATLAB. Il permet de visualiser et d'analyser des signaux numériques en utilisant diverses techniques d'analyse, telles que la transformée de Fourier, la décomposition en ondelettes, l'analyse de corrélation, etc.
 
 ***
 $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ [ (Revenir au sommaire) ](#retour)
 ***
-##### La TFD peut être utilisée pour identifier les composantes fréquentielles de ce signal audio. Dans certaines applications qui traitent de grandes quantités de données avec fft, il est courant de redimensionner l'entrée de sorte que le nombre d'échantillons soit une puissance de 2. fft remplit automatiquement les données avec des zéros pour augmenter la taille de l'échantillon. Cela peut accélérer considérablement le calcul de la transformation.
-***
-#### $~~~~~~$ **3- Spécifiez une nouvelle longueur de signal qui sera une puissance de 2, puis tracer 
-la densité spectrale de puissance du signal.** 
-***
-```matlab
-%qst 3 
 
-densite_spectrale= abs(fft(chant)).^2/N; 
-f = (0:floor(N/2))*(fe/N)/10;
-plot(f,densite_spectrale(1:floor(N/2)+1));
-title('densité spectrale de puissance du signal:');
-
-```
-![qst3](https://user-images.githubusercontent.com/106840796/210177673-64f265b0-d0a3-46a4-99b5-70662aed39ce.PNG)
+#### $~~~~~~$ **3- Tracez le spectrogramme qui permet de visualiser le contenu fréquentiel du signal au cours du temps (comme le fait une partition de musique) mais la précision sur l’axe des fréquences n’est pas suffisante pour relever précisément les 8 fréquences.** 
 ***
- ### **Explication :**
- ###### ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-
+![part2](https://user-images.githubusercontent.com/106840796/211198550-0bae4f2b-dcf2-4a28-a112-03d78a77734d.PNG)
 ***
 $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ [ (Revenir au sommaire) ](#retour)
 ***
-#### $~~~~~~$ **4- Déterminer à partir du tracé, la fréquence fondamentale du gémissement de rorqual bleu.** 
+$~~~~~~~~~~~~~~~~~~~~~~$<a name="part2c"></a>
+### $~~~~~~~~~~~~~~~~~~~~~~$ **- Approximation du spectre d’un signal sinusoïdal à temps continu par FFT**
+#### $~~~~~~$ **4- Le spectre d’un signal à temps continu peut être approché par transformée de Fourier discrète (TFD) ou sa version rapide (Fast Fourier Transform (FFT). Afficher le spectre de fréquence de la gamme musicale crée en échelle linéaire, puis avec une échelle en décibels.** 
+![4](https://user-images.githubusercontent.com/106840796/211198688-5929ba5e-b764-4ea7-9885-43b6630841d3.PNG)
 ***
 ```matlab
-% qst 4
+%qst 4
 
-% Recherche de la fréquence fondamentale
-[~, index] = max(densite_spectrale);
-freqence_fondamentale = f(index)
+%tracer le spectre en echelle lineaire
+spectre_lineaire=abs(fft(gamme_de_musique));
+subplot(2,1,1);
+fshift=(-length(gamme_de_musique)/2:length(gamme_de_musique)/2 -1 )*m_Fs/length(gamme_de_musique);
+plot(fshift,fftshift(spectre_lineaire));
+title('spectre en échelle linéaire');
+
+%tracer le spectre en echelle en decibels
+subplot(2,1,2);
+spectre_db = 20 * log10(spectre_lineaire); % convertion en dB
+plot(fshift,fftshift(spectre_db));
+title(' spectre en échelle en décibels');
 
 ```
-
+![5](https://user-images.githubusercontent.com/106840796/211199372-01bfdf0b-fb8e-4b24-8c07-22221349967c.PNG)
 ***
  ### **Explication :**
- ###### d apres le tracé , la frequence fondamentale du gémissement est ensuite trouvée en cherchant la fréquence avec la valeur maximale dans le spectre de puissance qui est egale a 50hz .
+ ###### L'échelle en décibels (dB) est une échelle logarithmique utilisée pour mesurer le niveau de puissance d'un signal. En revanche, l'échelle linéaire est une échelle qui représente les valeurs d'un signal de manière proportionnelle, sans utiliser de transformation logarithmique.
 
 ***
 $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ [ (Revenir au sommaire) ](#retour)

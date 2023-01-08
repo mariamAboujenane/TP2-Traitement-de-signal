@@ -1,0 +1,41 @@
+%qst 1
+ m_Fs=8192;
+ Ts=1/m_Fs;
+ t=[0:Ts:1];
+
+ 
+ F_dol=262;
+ F_re=294;
+ F_m=330;
+ F_fa=349;
+ F_sol=392;
+ F_si=494;
+ F_do2=523;
+ F_la=440;
+
+ Dol=sin(2*pi*F_dol*t); 
+ re=sin(2*pi*F_re*t);
+ mi=sin(2*pi*F_m*t);
+ fa=sin(2*pi*F_fa*t);
+ so=sin(2*pi*F_sol*t);
+ la=sin(2*pi*F_la*t);
+ si=sin(2*pi*F_si*t);
+ do=sin(2*pi*F_do2*t);
+
+gamme_de_musique= [Dol,re,mi,fa,so,la,si,do];
+% sound(gamme_de_musique,m_Fs);
+
+%qst 4
+
+%tracer le spectre en echelle lineaire
+spectre_lineaire=abs(fft(gamme_de_musique));
+subplot(2,1,1);
+fshift=(-length(gamme_de_musique)/2:length(gamme_de_musique)/2 -1 )*m_Fs/length(gamme_de_musique);
+plot(fshift,fftshift(spectre_lineaire));
+title('spectre en échelle linéaire');
+
+%tracer le spectre en echelle en decibels
+subplot(2,1,2);
+spectre_db = 20 * log10(spectre_lineaire); % convertion en dB
+plot(fshift,fftshift(spectre_db));
+title(' spectre en échelle en décibels');
